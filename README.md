@@ -1,4 +1,4 @@
-# ssi-logger
+# tclogger
 
 Simplified logging for node.js modules.
 
@@ -12,7 +12,7 @@ Simplified logging for node.js modules.
 * a log destination can be turned on or off at runtime.
 * logged objects are automatically formatted into key=value strings (great for sending messages to [splunk](http://www.splunk.com/)).
 * certain fields can be censored to avoid accidentally logging sensitive information.
-* formatted log messages are returned by SSi Logger to the caller.
+* formatted log messages are returned by tclogger to the caller.
 * it accepts multiple arguments and printf-style formats just like `console.log`.
 * defaults can be supplied that are included in every message.
 * your choice of API: `log(level, message, ...)` or `log.level(message, ...)`
@@ -32,13 +32,13 @@ which can be displayed/returned to the user if desired.
 
 ## Installation
 
-    npm install --save ssi-logger
+    npm install --save tclogger
 
 ## Examples
 
 Basic Usage:
 
-    var log = require('ssi-logger');
+    var log = require('tclogger');
 
     // install some transports
     process.on('log', log.syslogTransport('LOG_LOCAL5', 'INFO'));
@@ -64,7 +64,7 @@ Non-string message arguments:
 
 With censorship:
 
-    var log = require('ssi-logger');
+    var log = require('tclogger');
 
     log.censor([
         'card_number', // can contain property names
@@ -89,7 +89,7 @@ Return value:
 Logging to a file with daily log rotation:
 
     var FileStreamRotator = require('file-stream-rotator');
-    var log = require('ssi-logger');
+    var log = require('tclogger');
     var path = require('path');
 
     var logfile = FileStreamRotator.getStream({
@@ -135,7 +135,7 @@ Standard Log Levels: `EMERG`, `ALERT`, `CRIT`, `ERR`, `WARNING`, `NOTICE`, `INFO
 ## Transports
 
 Log messages are emitted as `log` events. Event listeners should be installed to receive the events and send them over
-the appropriate transport. SSi Logger provides a couple of common transports.
+the appropriate transport. tclogger provides a couple of common transports.
 
 Here's an example of the standard usage where logs go to syslog. Depending on the value of `mask`, log messages may or
 may not go to syslog. Here, 'INFO' means that log messages with levels up to 'INFO' are logged (i.e. 'DEBUG' messages are
@@ -323,4 +323,4 @@ As well as several manual tests:
 
 ## License
 
-See [LICENSE.md](https://github.com/ssimicro/ssi-logger/blob/master/LICENCE.md).
+See [LICENSE.md](https://github.com/tcort/tclogger/blob/master/LICENCE.md).
