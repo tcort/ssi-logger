@@ -16,6 +16,91 @@ Simplified logging for node.js modules.
 * it accepts multiple arguments and printf-style formats just like `console.log`.
 * defaults can be supplied that are included in every message.
 
+## Installation
+
+```
+npm install --save tclogger
+```
+
+You'll also want to install some transports
+```
+npm install --save tclogger-transport-console
+```
+
+## Examples
+
+Basic Usage:
+
+    const log = require('tclogger');
+    const consoleTransport = require('tclogger-console-transport');
+
+    // install some transports
+    process.on('log', consoleTransport());
+    
+    log.inProdEnv('Hello, World!');
+    // emits ---> { level: 'INFO', message: 'Hello, World!' }
+
+
+Multiple message arguments:
+
+    log.inDevEnv('Hello,', 'World!');
+    // emits ---> { level: 'DEBUG', message: 'Hello, World!' }
+
+[Formatting](http://nodejs.org/api/util.html#util_util_format_format):
+
+    log.toInvestigateTomorrow('CC Charge amount=%d username=%s', 12.85, 'thomasc');
+    // emits ---> { level: 'WARN', message: 'CC Charge amount=12.85 username=thomasc' }
+
+Non-string message arguments:
+
+    log.wakeMeInTheMiddleOfTheNight('IP Whitelist Accept', { remote_ip: remote_ip });
+    // emits ---> { level: 'ERROR', message: 'IP Whitelist Accept remote_ip=123.123.123.123' }
+
+With censorship:
+
+    const log = require('tclogger');
+    const consoleTransport = require('tclogger-console-transport');
+
+    log.censor([
+        'card_number', // can contain property names
+        /pass(word)?/  // and/or regular expressions
+    ]);
+
+    // install some transports
+    process.on('log', consoleTransport());
+    
+    log.inProvEnv({ first_name: 'John', last_name: 'Doe', card_number: '1234123412341234' });
+    // emits ---> { level: 'INFO', message: 'first_name=John last_name=Doe card_number=[redacted]' }
+
+Return value:
+
+    if (err) {
+        const human_readble_error_string = log.wakeMeInTheMiddleOfTheNight(err);
+        displayError(human_readble_error_string);
+        callback(err);
+        return;
+    }
+
+Setting defaults that are included in every log message:
+
+    var app = express();
+
+    app.use(function loggingConfig(req, res, next) {
+        req.log = log.defaults({
+            request_id: uuid.v1(),
+            client_ip: req.ip
+        });
+    });
+
+    app.get('/users/:uid', function getRoot(req, res) {
+        req.inProdEnv('User Get', req.params);
+        // emits ---> { level: 'INFO', message: 'User Get uid=thomasc request_id=e3aec5a8-12af-11e6-a148-3e1d05defe78 client_ip=127.0.0.1' }
+
+        res.render('user', db.getUser(req.params.uid));
+    });
+
+    app.listen(3000);
+
 ## Theory of Operation
 
 The module provides log functions and the arguments work just like [console.log()](https://nodejs.org/api/console.html#console_console_log_data),
@@ -41,21 +126,6 @@ To find other transports, just search for `tclogger` and `transport`.
 
 Any number of fields may be censored. This is useful when logging request objects to avoid accidentally logging
 a credit card number, password, or other sensitive information.
-
-## Example
-
-```
-npm install --save tclogger tclogger-console-transport
-```
-
-```
-const log = require('tclogger');
-const consoleTransport = require('tclogger-console-transport');
-
-process.on('log', consoleTransport());
-
-log.inProdEnv('Testing 1-2-3');
-```
 
 ## API
 
