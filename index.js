@@ -3,12 +3,12 @@
 
 var _ = require('lodash');
 var util = require('util');
-var logformat = require('logformat');
+var tclogformat = require('tclogformat');
 
 function log(level, message) {
 
     if (arguments.length > 1) {
-        message = util.format.apply(null, _.map(_.tail(arguments), logformat));
+        message = util.format.apply(null, _.map(_.tail(arguments), tclogformat));
     }
 
     // perform censorship
@@ -71,17 +71,10 @@ module.exports.censor = censor;
 module.exports.defaults = defaults;
 
 function addConvenienceFunctions(logger) {
-    // Emulate the logger.level() API of winston so we can use our logger implementation as a drop in replacement
-    logger.log = function () { logger.apply(null, Array.prototype.slice.call(arguments)); };
-    _.forEach(['EMERG', 'ALERT', 'CRIT', 'ERR', 'ERROR', 'WARNING', 'WARN', 'NOTICE', 'INFO', 'VERBOSE', 'DEBUG', 'SILLY'], function (level) {
-        logger[level.toLowerCase()] = function () { logger.apply(null, _.union([level], Array.prototype.slice.call(arguments))); };
-    });
+    logger.inTestEnv                    = function () { logger.apply(null, _.union(['DEBUG'], Array.prototype.slice.call(arguments))); };
+    logger.inProdEnv                    = function () { logger.apply(null, _.union([ 'INFO'], Array.prototype.slice.call(arguments))); };
+    logger.toInvestigateTomorrow        = function () { logger.apply(null, _.union([ 'WARN'], Array.prototype.slice.call(arguments))); };
+    logger.wakeMeInTheMiddleOfTheNight  = function () { logger.apply(null, _.union(['ERROR'], Array.prototype.slice.call(arguments))); };
 }
 
 addConvenienceFunctions(module.exports);
-
-// Various transports...
-module.exports.consoleTransport = require('./lib/transports/console');
-module.exports.streamTransport = require('./lib/transports/stream');
-module.exports.syslogTransport = require('./lib/transports/syslog');
-

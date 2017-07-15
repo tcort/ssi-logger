@@ -37,7 +37,7 @@ describe('tclogger', function() {
 
     describe('convience', function () {
 
-        it('should provide log.info()', function (done) {
+        it('should provide log.inProdEnv()', function (done) {
             process.on('log', function testf(obj) {
                 process.removeListener('log', testf);
                 expect(obj.level).to.be('INFO');
@@ -45,10 +45,10 @@ describe('tclogger', function() {
                 done();
             });
 
-            log.info(message);
+            log.inProdEnv(message);
         });
 
-        it('should provide log.debug()', function (done) {
+        it('should provide log.inTestEnv()', function (done) {
             process.on('log', function testf(obj) {
                 process.removeListener('log', testf);
                 expect(obj.level).to.be('DEBUG');
@@ -56,10 +56,10 @@ describe('tclogger', function() {
                 done();
             });
 
-            log.debug(message);
+            log.inTestEnv(message);
         });
 
-        it('should provide log.warn()', function (done) {
+        it('should provide log.toInvestigateTomorrow()', function (done) {
             process.on('log', function testf(obj) {
                 process.removeListener('log', testf);
                 expect(obj.level).to.be('WARN');
@@ -67,10 +67,10 @@ describe('tclogger', function() {
                 done();
             });
 
-            log.warn(message);
+            log.toInvestigateTomorrow(message);
         });
 
-        it('should provide log.error()', function (done) {
+        it('should provide log.wakeMeInTheMiddleOfTheNight()', function (done) {
             process.on('log', function testf(obj) {
                 process.removeListener('log', testf);
                 expect(obj.level).to.be('ERROR');
@@ -78,7 +78,7 @@ describe('tclogger', function() {
                 done();
             });
 
-            log.error(message);
+            log.wakeMeInTheMiddleOfTheNight(message);
         });
 
     });
@@ -110,7 +110,7 @@ describe('tclogger', function() {
                 done();
             });
 
-            mylog[level.toLowerCase()](message);
+            mylog['inProdEnv'](message);
         });
 
         it('should work with an object reference', function (done) {
@@ -134,9 +134,6 @@ describe('tclogger', function() {
             var level0 = log.defaults({ request_id: '7423927D-6F4E-43FE-846E-C474EA3488A3' });
             var level1 = level0.defaults('foobar');
             var level2 = level1.defaults({ cheese: 'cake' });
-
-            expect(level2).to.have.property('consoleTransport');
-            expect(level2.consoleTransport).to.be.a('function');
 
             process.on('log', function testfx(obj) {
                 process.removeListener('log', testfx);
