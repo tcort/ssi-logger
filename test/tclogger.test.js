@@ -4,7 +4,7 @@
 var expect = require('expect.js');
 var log = require('../');
 
-describe('ssi-logger', function() {
+describe('tclogger', function() {
     var level = 'INFO';
     var message = 'Test Message';
     var complex = {
@@ -21,7 +21,7 @@ describe('ssi-logger', function() {
     var ip_expect = ip_message + ' ip_address=' + ip_address;
 
     describe('logging', function () {
-    
+
         it('should emit log events', function (done) {
 
             process.on('log', function testf(obj) {
