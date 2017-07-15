@@ -1,6 +1,6 @@
 {
   "name": "tclogger",
-  "version": "2.5.7",
+  "version": "3.0.0",
   "description": "Simplified logging for node.js modules",
   "main": "index.js",
   "directories": {
