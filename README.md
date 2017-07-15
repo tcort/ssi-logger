@@ -33,12 +33,29 @@ which can be displayed/returned to the user if desired.
 Log messages are emitted as `log` events. Event listeners should be installed to receive the events and send them over
 the appropriate transport.
 
-To find the available transports, just search for `tclogger` and `transport`.
+* [tclogger-console-transport](https://github.com/tcort/tclogger-console-transport)
+
+To find other transports, just search for `tclogger` and `transport`.
 
 ## Censorship
 
 Any number of fields may be censored. This is useful when logging request objects to avoid accidentally logging
 a credit card number, password, or other sensitive information.
+
+## Example
+
+```
+npm install --save tclogger tclogger-console-transport
+```
+
+```
+const log = require('tclogger');
+const consoleTransport = require('tclogger-console-transport');
+
+process.on('log', consoleTransport());
+
+log.inProdEnv('Testing 1-2-3');
+```
 
 ## API
 
