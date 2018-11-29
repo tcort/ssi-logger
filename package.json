@@ -27,13 +27,13 @@
   },
   "homepage": "https://github.com/tcort/tclogger",
   "dependencies": {
-    "lodash": "^4.15.0",
-    "tclogformat": "^2.0.0"
+    "lodash": "^4.17.11",
+    "tclogformat": "^2.0.1"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "mocha": "^3.0.2",
-    "jshint": "^2.9.3"
+    "mocha": "^5.2.0",
+    "jshint": "^2.9.6"
   },
   "jshintConfig": {
     "esversion": 6,
