@@ -2,7 +2,7 @@ MIT License
 -----------
 
 ```
-Copyright (C) 2017 Thomas Cort <linuxgeek@gmail.com>
+Copyright (C) 2017, 2018 Thomas Cort <linuxgeek@gmail.com>
 Copyright (C) 2015, 2016 SSi Micro, Ltd. and other contributors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
